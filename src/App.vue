@@ -1,59 +1,17 @@
 <template>
-    <img alt="Vue logo" src="./assets/logo.png">
-    <h2>欢迎光临红浪漫洗浴中心</h2>
-    <div>请选择一位美女为您服务</div>
-    <div>
-        <button
-            v-for="(item,index) in girls"
-            :key='index'
-            @click="selectGirlFunc(index)"
-            >
-            {{index+1}}:{{item}}
-        </button>
-    </div>
-    <div>你选择了【{{ selectGirl }}】为你服务</div>
-    <div><button @click="endAction">点餐完毕</button></div>
-    <div>{{ endText }}</div>
+    <div>{{nowTime}}</div>
+    <div><button @click="getNowTime">显示时间</button></div>
 </template>
 
 <script lang="ts">
-import { toRefs, ref, reactive, watch } from 'vue';
-interface DataProps{
-    girls: string[];
-    selectGirl: string;
-    selectGirlFunc: (index: number) => void;
-}
+import {nowTime, getNowTime} from './hooks/useNowTIme'
 
 export default {
     name: 'App',
     setup() {
-
-        const data:DataProps = reactive({
-            girls: ['小罗', '罗姨', '罗老师'],
-            selectGirl: '',
-            selectGirlFunc: (index: number) => {
-                data.selectGirl = data.girls[index];
-            }
-        })
-
-        const refData = toRefs(data);
-        const endText = ref('红浪漫');
-        const endAction = () => {
-            endText.value = '您心灵的港湾| ' + endText.value;
-            // document.title = endText.value;
-        };
-
-        watch([endText, ()=>data.selectGirl], (newValue, oldValue)=>{
-            console.log(`'old:'+ ${oldValue}`);
-            console.log(`'new:'+ ${newValue}`);
-            document.title = newValue[0];
-        })
-
-
         return{
-            ...refData,
-            endText,
-            endAction
+            nowTime,
+            getNowTime
         }
     },
 }
