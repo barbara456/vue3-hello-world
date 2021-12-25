@@ -12,10 +12,12 @@
         </button>
     </div>
     <div>你选择了【{{ selectGirl }}】为你服务</div>
+    <div><button @click="endAction">点餐完毕</button></div>
+    <div>{{ endText }}</div>
 </template>
 
 <script lang="ts">
-import { toRefs, ref, reactive } from 'vue';
+import { toRefs, ref, reactive, watch } from 'vue';
 interface DataProps{
     girls: string[];
     selectGirl: string;
@@ -34,16 +36,24 @@ export default {
             }
         })
 
-        const refData = toRefs(data)
+        const refData = toRefs(data);
+        const endText = ref('红浪漫');
+        const endAction = () => {
+            endText.value = '您心灵的港湾| ' + endText.value;
+            // document.title = endText.value;
+        };
 
-        // const girls = ref();
-        // const selectGirl = ref('');
-        // const selectGirlFunc = (index: number) => {
-        //     selectGirl.value = girls.value[index];
-        // };
+        watch([endText, ()=>data.selectGirl], (newValue, oldValue)=>{
+            console.log(`'old:'+ ${oldValue}`);
+            console.log(`'new:'+ ${newValue}`);
+            document.title = newValue[0];
+        })
+
 
         return{
-            ...refData
+            ...refData,
+            endText,
+            endAction
         }
     },
 }
