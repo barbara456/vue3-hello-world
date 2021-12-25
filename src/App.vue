@@ -1,18 +1,21 @@
 <template>
-    <div>{{nowTime}}</div>
-    <div><button @click="getNowTime">显示时间</button></div>
+    <div>
+        <h2>欢迎光临红浪漫洗浴中心</h2>
+        <div>随机抽取一位美女为您服务</div>
+        <div v-if="loading">loading...</div>
+        <img v-if="loaded" :src="result.imgUrl" alt="">
+    </div>
 </template>
 
 <script lang="ts">
-import {nowTime, getNowTime} from './hooks/useNowTIme'
+import useUrlAxios from './hooks/uesURLAxios'
 
 export default {
     name: 'App',
     setup() {
-        return{
-            nowTime,
-            getNowTime
-        }
+        const {result, loading, loaded} = useUrlAxios('https://apiblog.jspang.com/default/getGirl')
+
+        return {result, loading, loaded}
     },
 }
 </script>
